@@ -9,7 +9,7 @@ const authHelper = require("../helper/auth");
 const userController = {
 register: async (req, res, next) => {
     try {
-      const { email, password, fullname, role } = req.body;
+      const { email, password, fullname, role,phone,store_name } = req.body;
       const { rowCount } = await findEmail(email);
       if (rowCount) {
         return next(createError(403, "Email is already used"));
@@ -23,6 +23,8 @@ register: async (req, res, next) => {
         passwordHash,
         fullname,
         role,
+        phone,
+        store_name
       };
       await createUser(data)
         .then((result) =>

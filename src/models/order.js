@@ -1,33 +1,34 @@
 const Pool = require('../config/db')
 const selectAll = ({limit,offset,sort,sortby}) => {
   return Pool.query(`
-  SELECT
-  order_table.id,
-  product.name,
-  product.stock,
-  product.price,
-  product.photo,
-  product.description,
-  product.category_id,
-  order_table.quantity,
-  order_table.order_date
-FROM
-order_table
-JOIN
-product ON order_table.product_id = product.id
-  ORDER BY ${sortby} ${sort} LIMIT ${limit} OFFSET ${offset}`)
+  SELECT *
+  FROM order_table
+  `)
 }
 const select = (id) => {
-  return Pool.query(`SELECT * FROM order_table WHERE id=${id}`)
+  return Pool.query(` SELECT *
+  FROM order_table
+  WHERE order_table.id = ${id}`)
+} 
+
+const selectByUserId = (users_id) => {
+  return Pool.query(`
+    SELECT * 
+    FROM order_table 
+    LEFT JOIN product 
+    ON CAST(order_table.product_id AS INTEGER) = product.id
+    WHERE order_table.users_id='${users_id}';
+  `);
 }
+
 const insert = (data) => {
-  const {id,product_id,quantity,order_date} = data
-  return Pool.query(`INSERT INTO order_table (id, product_id, quantity, order_date) VALUES (${id}, ${product_id}, ${quantity}, '${order_date}')`)
+  const {product_id,quantity,order_date,product_size,users_id} = data
+  return Pool.query(`INSERT INTO order_table ( product_id, quantity, order_date,product_size,users_id) VALUES ( ${product_id}, ${quantity}, '${order_date}', '${product_size}', '${users_id}')`)
 
 }
 const update = (data) => {
-  const {id,product_id,quantity,order_date} = data
-  return Pool.query(`UPDATE order_table SET product_id=${product_id}, quantity=${quantity}, order_date='${order_date}'  WHERE id=${id}`)
+  const {id,quantity,order_date} = data
+  return Pool.query(`UPDATE order_table SET quantity=${quantity}, order_date='${order_date}'  WHERE id=${id}`)
 }
 const deleteData = (id) => {
   return Pool.query(`DELETE FROM order_table WHERE id=${id}`)
@@ -56,5 +57,6 @@ module.exports = {
   update,
   deleteData,
   countData,
-  findId
+  findId,
+  selectByUserId
 }

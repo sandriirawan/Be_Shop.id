@@ -8,10 +8,16 @@ const {hitCacheProductDetail,clearCacheProductDetail} = require('../middlewares/
 
 
   router
-  .get('/', protect, productController.getAllProduct)
-  .get('/:id', protect, hitCacheProductDetail, productController.getProduct)
-  .post('/', protect,validateSellerRole,upload.single('photo'), productController.insertProduct)
-  .put('/:id', protect, validateSellerRole,clearCacheProductDetail, upload.single('photo'), productController.updateProduct)
-  .delete('/:id', protect, validateSellerRole,clearCacheProductDetail, productController.deleteProduct)
+  // .get('/',  productController.getAllProduct)
+  // .get('/:id',  hitCacheProductDetail, productController.getProduct)
+  // .post('/', protect,validateSellerRole,upload.single('photo'), productController.insertProduct)
+  // .put('/:id', protect, validateSellerRole, upload.single('photo'), productController.updateProduct)
+  // .delete('/:id', protect, validateSellerRole,clearCacheProductDetail, productController.deleteProduct)
+
+  .get('/',  productController.getAllProduct)
+  .get('/:id', productController.getProduct)
+  .post('/', upload.single('photo'), productController.insertProduct)
+  .put('/:id',  upload.single('photo'), productController.updateProduct)
+  .delete('/:id',  productController.deleteProduct)
 
 module.exports = router

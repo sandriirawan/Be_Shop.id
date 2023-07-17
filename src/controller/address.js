@@ -1,11 +1,11 @@
 // const createError = require('http-errors')
-const {selectAll,select,countData,findId,insert,update,deleteData} = require('../models/products')
+const {selectAll,select,countData,findId,insert,update,deleteData} = require('../models/address')
 const commonHelper = require('../helper/common')
-const client = require('../config/redis')
 
 
-const productController = {
-  getAllProduct: async(req, res) => {
+
+const shippingAddressController = {
+  getAllShippingAddress: async(req, res) => {
     try{
       const page = Number(req.query.page) || 1
       const limit = Number(req.query.limit) || 100
@@ -27,32 +27,29 @@ const productController = {
       console.log(error);
     }
   },
-  getProduct: (req, res) => {
+  getShippingAddress: (req, res) => {
     const id = Number(req.params.id)
     select(id)
       .then(
         result => {
-        // client.setEx(`product/${id}`,60*60,JSON.stringify(result.rows))
         commonHelper.response(res, result.rows, 200, "get data success from database")
         }
       ) 
       .catch(err => res.send(err)
       )
   },
-  insertProduct: async(req, res) => {
-    const port = 3000
-    const photo = req.file.filename;
-    const {name,stock,price,description} = req.body
+  insertShippingAddress: async(req, res) => {
+    const {name, address_as,  address,  phone, postal_code, city} = req.body
     const {rows: [count]} = await countData()
     const id = Number(count.count)+1;
     const data ={
-      id,
-      name,
-      stock,
-      price,
-      photo:`http://localhost:${port}/img/${photo}`,
-      description,
-     
+        id,
+        name, 
+        address_as, 
+        address , 
+        phone , 
+        postal_code , 
+        city  
     }
    insert(data)
     .then((result) =>
@@ -61,27 +58,26 @@ const productController = {
       .catch((err) => res.send(err));
   },
  
-  updateProduct: async(req, res) => {
+  updateShippingAddress: async(req, res) => {
     try{
-      const port = 3000
       const id = Number(req.params.id)
-      const photo = req.file.filename;
-      const { name,stock,price,description} = req.body
+      const {name, address_as,  address,  phone, postal_code, city} = req.body
       const {rowCount} = await findId(id)
       if(!rowCount){
         return next(createError(403,"ID is Not Found"))
       }
       const data ={
         id,
-        name,
-        stock,
-        price,
-        photo:`http://localhost:${port}/img/${photo}`,
-        description,
+        name, 
+        address_as, 
+        address , 
+        phone , 
+        postal_code , 
+        city  
       }
       update(data)
         .then(
-          result => commonHelper.response(res, result.rows, 200, "Product updated")
+          result => commonHelper.response(res, result.rows, 200, "ShippingAddress updated")
           )
           .catch(err => res.send(err)
           )
@@ -89,7 +85,7 @@ const productController = {
           console.log(error);
         }
   },
-  deleteProduct: async(req, res, next) => {
+  deleteShippingAddress: async(req, res, next) => {
     try{
       const id = Number(req.params.id)
       const {rowCount} = await findId(id)
@@ -98,7 +94,7 @@ const productController = {
       }
       deleteData(id)
         .then(
-          result => commonHelper.response(res, result.rows, 200, "Product deleted")
+          result => commonHelper.response(res, result.rows, 200, "ShippingAddress deleted")
         )
         .catch(err => res.send(err)
         )
@@ -108,4 +104,4 @@ const productController = {
   }
 }
 
-module.exports = productController
+module.exports = shippingAddressController
