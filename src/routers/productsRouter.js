@@ -16,8 +16,8 @@ const {hitCacheProductDetail,clearCacheProductDetail} = require('../middlewares/
 
   .get('/',  productController.getAllProduct)
   .get('/:id', productController.getProduct)
-  .post('/', upload.single('photo'), productController.insertProduct)
-  .put('/:id',  upload.single('photo'), productController.updateProduct)
+  .post('/', upload, productController.insertProduct)
+  .put('/:id',  upload, productController.updateProduct)
   .delete('/:id',  productController.deleteProduct)
 
 module.exports = router

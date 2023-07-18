@@ -7,7 +7,7 @@ CREATE TABLE users(
     password VARCHAR NOT NULL,
     fullname VARCHAR,
     role VARCHAR,
-    phone INT,
+    phone VARCHAR,
     store_name VARCHAR
 );
 ALTER TABLE users ALTER COLUMN phone TYPE VARCHAR;
@@ -20,7 +20,6 @@ CREATE TABLE product(
     price INT NOT NULL,
     photo VARCHAR NOT NULL,
     description VARCHAR NOT NULL,
-    category_id INT FOREIGN KEY category (id)
 );
 
 
@@ -34,8 +33,8 @@ CREATE TABLE order_table (
     product_id INT NOT NULL,
     quantity INT NOT NULL,
     order_date TIMESTAMP NOT NULL,
-    total_price INT,
-    FOREIGN KEY (product_id) REFERENCES product (id)
+    users_id INT,
+    product_size VARCHAR,
 );
 
 CREATE TABLE address (
@@ -64,6 +63,7 @@ ADD CONSTRAINT users_id FOREIGN KEY (users_id) REFERENCES users (id);
 SELECT * FROM PRODUCT;
 SELECT * FROM users;
 SELECT * FROM order_table;
+SELECT * FROM category;
 
 
 

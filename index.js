@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
 app.use('/', mainRouter)
-app.use('/img', express.static('src/upload'));
+app.use('/img', express.static('upload'));
 // app.all('*', (req, res, next) => {
 //   next(new createError.NotFound())
 // })

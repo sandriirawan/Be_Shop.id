@@ -5,10 +5,10 @@ const {protect} = require('../middlewares/auth')
 
 
 router
-  .get('/',protect, getAllCategory)
-  .get('/:id',protect, getCategory)
-  .post('/',protect, insertCategory)
-  .put('/:id',protect, updateCategory)
-  .delete('/:id',protect, deleteCategory)
+  .get('/', getAllCategory)
+  .get('/:id', getCategory)
+  .post('/', insertCategory)
+  .put('/:id', updateCategory)
+  .delete('/:id', deleteCategory)
 
 module.exports = router

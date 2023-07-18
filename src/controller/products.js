@@ -2,6 +2,7 @@
 const {selectAll,select,countData,findId,insert,update,deleteData} = require('../models/products')
 const commonHelper = require('../helper/common')
 const client = require('../config/redis')
+const cloudinary = require('../middlewares/cloudinary');
 
 
 const productController = {
@@ -41,7 +42,8 @@ const productController = {
   },
   insertProduct: async(req, res) => {
     const port = 3000
-    const photo = req.file.filename;
+    const result = await cloudinary.uploader.upload(req.file.path)
+    const photo = result.secure_url;
     const {name,stock,price,description} = req.body
     const {rows: [count]} = await countData()
     const id = Number(count.count)+1;
@@ -50,7 +52,7 @@ const productController = {
       name,
       stock,
       price,
-      photo:`http://localhost:${port}/img/${photo}`,
+      photo,
       description,
      
     }
@@ -65,7 +67,8 @@ const productController = {
     try{
       const port = 3000
       const id = Number(req.params.id)
-      const photo = req.file.filename;
+      const result = await cloudinary.uploader.upload(req.file.path)
+      const photo = result.secure_url;
       const { name,stock,price,description} = req.body
       const {rowCount} = await findId(id)
       if(!rowCount){
@@ -76,7 +79,7 @@ const productController = {
         name,
         stock,
         price,
-        photo:`http://localhost:${port}/img/${photo}`,
+        photo,
         description,
       }
       update(data)
