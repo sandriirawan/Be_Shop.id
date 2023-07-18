@@ -3,14 +3,14 @@ const express = require('express')
 // const createError = require('http-errors')
 const app = express()
 const cors = require('cors')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const mainRouter = require('./src/routers/index')
 const port = 3000
 
 
 app.use(express.json())
 app.use(cors())
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
 app.use('/', mainRouter)
 app.use('/img', express.static('upload'));
 // app.all('*', (req, res, next) => {
